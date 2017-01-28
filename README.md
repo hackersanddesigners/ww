@@ -68,8 +68,13 @@ You can test by running the following.  You must be in the correct directory or 
 
     $ sudo ./server.sh
 
-In the browser: `https://localhost/index.html` for pi 1, or `http://localhost/index.html` for pi 2. 
+You will need some data so run the following (only once).
 
+    $ mkdir /data
+
+Create a file called "data" in that directory with text, can be any text.
+
+In the browser: `https://localhost/index.html` for pi 1, or `http://localhost/index.html` for pi 2. 
 
 Copy changes to the pis.
 
@@ -87,4 +92,11 @@ The scripture is saved and generated in a text file located at `/data/scripture`
 
     $ scp pi@10.1.1.2:/data/scripture .
 
+## Testing/Debugging USB
+
+    $ ssh pi@10.1.1.2
+
+You can see add and remove events by running the following.
+
+    $ tail -f /var/log/usb.log
 
