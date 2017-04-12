@@ -1,0 +1,2 @@
+KERNEL=="sd[a-z]", SUBSYSTEM=="block", ACTION=="add", RUN=="/home/pi/add.sh '%E{ID_FS_LABEL}' '%E{DEVNAME}'"
+KERNEL=="sd[a-z]", SUBSYSTEM=="block", ACTION=="remove", RUN=="/home/pi/remove.sh '%E{ID_FS_LABEL}' '%E{DEVNAME}'"
