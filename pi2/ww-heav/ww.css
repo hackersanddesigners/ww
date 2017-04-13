@@ -1,8 +1,17 @@
+body {
+  overflow: hidden;
+}
+
 p {
   font-family: "Times New Roman", Georgia, Serif;
   opacity: 0;
   animation: fade 8s linear;
-	font-size: 24px;
+  font-size: 24px;
+}
+
+span {
+  padding-right: 66px;
+  font-size: 15px;
 }
 
 .new {

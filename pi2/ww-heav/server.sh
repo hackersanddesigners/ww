@@ -16,6 +16,8 @@ import shaney
 
 from subprocess import call
 
+count = 1
+
 def get_status():
   try:
     f = open('/tmp/status', 'r')
@@ -51,32 +53,43 @@ class S(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        self._set_headers()
-        txt = ''
-        clazz = ''
+      print self.path
+      global count
+      self._set_headers()
+      txt = ''
+      clazz = ''
+      res = ''
+      inc = False
+
+      try:
+        if self.path == '/':
+          inc = True
+          self.path = '/index.html'
+        f = open('./' + self.path)
+        template = f.read() 
+        f.close()
 
         if get_status() == "1":
           txt = get_last()
           clazz = 'new'
           update_status()
+          res = template.replace('THE_TEXT1', txt)
+          res = res.replace('THE_CLASS', clazz)
+          for i in range(2, 5):
+            res = template.replace('THE_TEXT'+str(i), "")
         else:
           txt = get_txt()
-          txt = shaney.do_shaney(txt)
-
-        if self.path == '/':
-          self.path = '/index.html'
-
-
-        try:
-       	  f = open('./' + self.path)
-          template = f.read() 
-          res = template.replace('THE_TEXT', txt)
-          res = res.replace('THE_CLASS', clazz)
+          res = template.replace('THE_CLASS', clazz)
+          for i in range(1, 5):
+            stxt = shaney.do_shaney(txt)
+            res = res.replace('THE_TEXT'+str(i), stxt)
+            res = res.replace('THE_COUNT'+str(i), str(count))
+            if inc: 
+              count = count + 1
           self.wfile.write(res)
-          f.close()
           return
-        except IOError:
-          self.send_error(404, 'file not found')
+      except IOError:
+        self.send_error(404, 'file not found')
 
     def do_HEAD(self):
         self._set_headers()

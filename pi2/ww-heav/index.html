@@ -2,10 +2,24 @@
 <html>
 <head>
 <meta http-equiv="refresh" content="10">
-<title>Momentary Zine - HACKERS & DESIGNERS</title>
+<title>Wailing Wall - HACKERS & DESIGNERS</title>
 <link rel="stylesheet" type="text/css" href="ww.css" />
 </head>
 <body>
-<p>THE_TEXT</p>
+<p><span>THE_COUNT1</span>THE_TEXT1</p>
+<p><span>THE_COUNT2</span>THE_TEXT2</p>
+<p><span>THE_COUNT3</span>THE_TEXT3</p>
+<p><span>THE_COUNT4</span>THE_TEXT4</p>
+<script>
+(function() {
+  document.querySelectorAll("p").forEach(function(p) {
+    p.style.position = 'absolute';
+    p.style.width = "" + Math.floor(Math.random()*(100-50+1)+50) + "%";
+    p.style.top = "" + Math.floor((Math.random() * (window.innerHeight - p.offsetHeight)) + 1) + "px";
+    p.style.left = "" + Math.floor((Math.random() * (window.innerWidth - p.offsetWidth)) + 1) + "px";
+    p.style["font-size"] = "" + Math.floor(Math.random()*(72-11+1)+11)  + "px";
+  }); 
+})();
+</script>
 </body>
 </html>
