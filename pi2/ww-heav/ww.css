@@ -1,0 +1,17 @@
+p {
+  font-family: "Times New Roman", Georgia, Serif;
+  opacity: 0;
+  animation: fade 8s linear;
+	font-size: 24px;
+}
+
+.new {
+  color: #ff0;
+  text-shadow: 0px 0px 27px rgba(255, 255, 0, 1);
+}
+
+@keyframes fade {
+  0%,100% { opacity: 0 } 
+  50% { opacity: 1 } 
+}
+

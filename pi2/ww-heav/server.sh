@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import SocketServer
 import ssl
@@ -16,9 +16,30 @@ import shaney
 
 from subprocess import call
 
+def get_status():
+  try:
+    f = open('/tmp/status', 'r')
+    s = f.read(1)
+    f.close()
+    return s
+  except:
+    return "0"
+
+def update_status():
+  f = open('/tmp/status', 'w')
+  f.write("0")
+  f.close()
+
 def get_txt():
   try:
-    f = open('data', 'r')
+    f = open('/tmp/data', 'r')
+    return f.read()
+  except:
+    return 'Sorry. No data.' 
+
+def get_last():
+  try:
+    f = open('/tmp/last', 'r')
     return f.read()
   except:
     return 'Sorry. No data.' 
@@ -31,14 +52,26 @@ class S(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        txt = get_txt()
-        txt = shaney.do_shaney(txt)
+        txt = ''
+        clazz = ''
+
+        if get_status() == "1":
+          txt = get_last()
+          clazz = 'new'
+          update_status()
+        else:
+          txt = get_txt()
+          txt = shaney.do_shaney(txt)
+
         if self.path == '/':
           self.path = '/index.html'
+
+
         try:
        	  f = open('./' + self.path)
           template = f.read() 
           res = template.replace('THE_TEXT', txt)
+          res = res.replace('THE_CLASS', clazz)
           self.wfile.write(res)
           f.close()
           return
