@@ -6,7 +6,7 @@ p {
   font-family: "Times New Roman", Georgia, Serif;
   opacity: 0;
   animation: fade 8s linear;
-  font-size: 24px;
+  font-size: 48px;
 }
 
 span {
@@ -15,7 +15,7 @@ span {
 }
 
 .new {
-  color: #ff0;
+  color: #000;
   text-shadow: 0px 0px 27px rgba(255, 255, 0, 1);
 }
 
