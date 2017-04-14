@@ -38,7 +38,49 @@ The chatbot is based on the python version of Eliza and is in this repository in
 
 Edit the file `bot.py` to make changes to the chatbot.  Once you are happy with it, copy it to the pi as follows.
 
-    $ scp boy.py pi@10.1.1.1:ww-conf
+    $ scp bot.py pi@10.1.1.1:ww-conf
 
+Restart the pi1.
+
+    $ ssh pi@10.1.1.1 "sudo reboot"
+
+## Visuals - editing HTML
+
+All projections are simple HTML and CSS.  You can edit the following files.
+
+### Pi 1
+
+    ww/pi1/ww-conf/index.html
+    ww/pi1/ww-conf/mz.css
+
+### Pi 2
+
+    ww/pi2/ww-heav/index.html
+    ww/pi2/ww-heav/ww.css
+
+### Test
+
+You can test by running the following.  You must be in the correct directory or folder for which ever pi you want to test (they both have their own `server.sh`).
+
+    $ sudo ./server.sh
+
+In the browser: `https://localhost/index.html` for pi 1, or `http://localhost/index.html` for pi 2. 
+
+
+Copy changes to the pis.
+
+    $ scp ww/pi1/ww-conf/index.html pi@10.1.1.1:ww-conf
+
+    $ scp ww/pi1/ww-conf/mz.css pi@10.1.1.1:ww-conf
+
+    $ scp ww/pi2/ww-heav/index.html pi@10.1.1.2:ww-heav
+
+    $ scp ww/pi2/ww-heav/ww.css pi@10.1.1.2:ww-heav
+
+## Scripture
+
+The scripture is saved and generated in a text file located at `/data/scripture`.  Download it, print it, design it...whatever.
+
+    $ scp pi@10.1.1.2:/data/scripture .
 
 

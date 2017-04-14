@@ -46,6 +46,12 @@ def get_last():
   except:
     return 'Sorry. No data.' 
 
+def write_txt(c, txt):
+  txt = str(c)+"\t"+txt+"\n"
+  print txt
+  with open("/data/scripture", "a") as f:
+    f.write(txt)
+
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
         self.send_response(200)
@@ -68,28 +74,30 @@ class S(BaseHTTPRequestHandler):
         template = f.read() 
         f.close()
 
-        if get_status() == "1":
-          txt = get_last()
-          print "TXT" + txt
-          clazz = 'new'
-          update_status()
-          res = template.replace('THE_TEXT1', txt)
-          res = res.replace('THE_CLASS', clazz)
-          res = res.replace('THE_COUNT1', str(count))
-          if inc: 
+        if inc:
+          if get_status() == "1":
+            txt = get_last()
+            clazz = 'new'
+            update_status()
+            res = template.replace('THE_TEXT1', txt)
+            res = res.replace('THE_CLASS', clazz)
+            res = res.replace('THE_COUNT1', str(count))
+            write_txt(count, stxt)
             count = count + 1
-          for i in range(2, 5):
-            res = res.replace('THE_TEXT'+str(i), "")
-            res = res.replace('THE_COUNT'+str(i), "")
-        else:
-          txt = get_txt()
-          res = template.replace('THE_CLASS', "")
-          for i in range(1, 5):
-            stxt = shaney.do_shaney(txt)
-            res = res.replace('THE_TEXT'+str(i), stxt)
-            res = res.replace('THE_COUNT'+str(i), str(count))
-            if inc: 
+            for i in range(2, 5):
+              res = res.replace('THE_TEXT'+str(i), "")
+              res = res.replace('THE_COUNT'+str(i), "")
+          else:
+            txt = get_txt()
+            res = template.replace('THE_CLASS', "")
+            for i in range(1, 5):
+              stxt = shaney.do_shaney(txt)
+              res = res.replace('THE_TEXT'+str(i), stxt)
+              res = res.replace('THE_COUNT'+str(i), str(count))
+              write_txt(count, stxt)
               count = count + 1
+        else:
+          res = template
         self.wfile.write(res)
         return
       except IOError:
