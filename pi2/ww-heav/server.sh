@@ -20,7 +20,7 @@ count = 1
 
 def get_status():
   try:
-    f = open('/tmp/status', 'r')
+    f = open('/data/status', 'r')
     s = f.read(1)
     f.close()
     return s
@@ -28,20 +28,20 @@ def get_status():
     return "0"
 
 def update_status():
-  f = open('/tmp/status', 'w')
+  f = open('/data/status', 'w')
   f.write("0")
   f.close()
 
 def get_txt():
   try:
-    f = open('/tmp/data', 'r')
+    f = open('/data/data', 'r')
     return f.read()
   except:
     return 'Sorry. No data.' 
 
 def get_last():
   try:
-    f = open('/tmp/last', 'r')
+    f = open('/data/last', 'r')
     return f.read()
   except:
     return 'Sorry. No data.' 

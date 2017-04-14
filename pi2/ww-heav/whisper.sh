@@ -7,7 +7,7 @@ from random import randint
 
 def get_txt():
   try:
-    f = open('/tmp/data', 'r')
+    f = open('/data/data', 'r')
     return f.read()
   except:
     return 'Sorry. No data.' 
@@ -18,6 +18,7 @@ while True:
   s = randint(10, 100)
   v = "en+whisper" if randint(0, 1) == 0 else "en+whisperf"
   print v
-  Popen(["espeak", "-a", "20", "-p", str(p), "-s", str(s), "-v", v, txt])
+  #Popen(["espeak", "-a", "10", "-p", str(p), "-s", str(s), "-v", v, txt])
+  Popen(["espeak", "-a", "2", "-p", str(p), "-s", str(s), txt])
   time.sleep(randint(10,30))
 
