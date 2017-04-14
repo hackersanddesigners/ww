@@ -1,0 +1,10 @@
+[Unit]
+Description=Wailing Wall Confessional
+
+[Service]
+WorkingDirectory=/home/pi/ww-heav
+Restart=always
+ExecStart=/home/pi/ww-heav/server.sh
+
+[Install]
+WantedBy=multi-user.target
