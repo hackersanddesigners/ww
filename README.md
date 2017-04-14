@@ -1,6 +1,6 @@
 # ww
 
-This is the "user generated religion" installation.  Once the Raspberry Pis are booted there should be an open network called "Wailing Wall".  Join this network to make modifications manage the pis.
+This is the "user generated religion" installation.  Once the Raspberry Pis are booted there should be an open network called "Wailing Wall".  Join this network to make modifications and manage the pis.
 
 ## WiFi
 
@@ -24,9 +24,9 @@ Change the file, ssid is the network name, psk is the network password.
 
 ## Shutdown the pis
 
-    $ ssh pi@10.1.1.1 "sudo poweroff"
-
     $ ssh pi@10.1.1.2 "sudo poweroff"
+
+    $ ssh pi@10.1.1.1 "sudo poweroff"
 
 ## The Chat Bot
 
