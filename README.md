@@ -10,7 +10,7 @@ In the Terminal of your computer connect to the pi.  Passwords are "arnhemarnhem
 
     $ ssh pi@10.1.1.1
 
-Once connected to the pi. In nano Ctl+w is save, Ctl+x quits.
+Once connected to the pi. In nano Ctl+o is save, Ctl+x quits.
 
     $  sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 
