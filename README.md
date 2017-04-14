@@ -22,6 +22,10 @@ Change the file, ssid is the network name, psk is the network password.
         priority=1
     }
 
+Reboot the pi.
+
+    $ sudo reboot
+
 ## Shutdown the pis
 
     $ ssh pi@10.1.1.2 "sudo poweroff"
