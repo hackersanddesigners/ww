@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="refresh" content="3600">
+<style>
+
+* {
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+p {
+  font-family: "Times New Roman", Georgia, Serif;
+  opacity: 0;
+  animation: fade 8s linear;
+  font-size: 48px;
+}
+
+span {
+  padding-right: 66px;
+  font-size: 15px;
+}
+
+.new {
+  color: #000;
+  text-shadow: 0px 0px 27px rgba(255, 255, 0, 1);
+}
+
+@keyframes fade {
+  0%,100% { opacity: 0 } 
+  50% { opacity: 1 } 
+}
+
+</style>
+</head>
+<body>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<script>
+
+var handleEnlightenment = function(obj) {
+  var elems = document.querySelectorAll('p');
+  for(var i = 0; i < elems.length; i++) {
+    elems[i].innerHTML = '';
+  }
+  var e = elems[0];
+  e.style['font-size'] = '' + Math.floor(Math.random()*(72-11+1)+11)  + 'px';
+  e.style.position = 'absolute';
+  e.style.width = '100%';
+  e.style.top = '0px';
+  e.style.left = '0px';
+  e.innerHTML = '<span>' + obj.count + '</span>' + obj.txt;
+};
+
+var handleNormie = function(obj) {
+  var elems = document.querySelectorAll('p');
+  var e = elems[Math.random() * (elems.length - 1) + 1;
+  e.style['font-size'] = '' + Math.floor(Math.random()*(72-11+1)+11)  + 'px';
+  e.style.position = 'absolute';
+  e.style.width = '' + Math.floor(Math.random()*(100-50+1)+50) + '%';
+  e.style.top = '' + Math.floor((Math.random() * (window.innerHeight - p.offsetHeight)) + 1) + 'px';
+  e.style.left = '' + Math.floor((Math.random() * (window.innerWidth - p.offsetWidth)) + 1) + 'px';
+  e.innerHTML = '<span>' + obj.count + '</span>' + obj.txt;
+};
+
+var handleObj = function(obj) {
+  if(obj.note) handleEnlightenment(obj);
+  else handleNormie(obj);
+};
+
+(function() {
+
+  // Websocket stuff - JBG
+
+  var ws = new WebSocket('ws://localhost:8000');
+  ws.onopen = function(e) {
+    console.log('Websocket open.');
+    // Start recognition - JBG
+    start();
+  };
+
+  ws.onclose = function(e) {
+    console.log('Websocket closed.');
+  };
+
+  ws.onerror = function(e) {
+    console.log('Websocket errored.');
+  };
+
+  ws.onmessage = function(e) {
+    //console.log(e.data);
+    var fr = new FileReader();
+    fr.onload = function() {
+      var obj = JSON.parse(fr.result);
+      handleObj(obj);
+    };
+    fr.readAsText(e.data);
+  };
+
+})();
+
+</script>
+</body>
+</html>
+
