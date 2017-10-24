@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="refresh" content="3600">
+<style>
+
+* {
+  margin: 0;
+}
+
+</style>
+</head>
+<body>
+<h1></h1>
+<p></p>
+<script>
+
+var background = '#fff';
+var index = 0;
+var restart = true;
+
+(function() {
+
+  // Websocket stuff - JBG
+
+  var ws = new WebSocket('ws://localhost:8000');
+  ws.onopen = function(e) {
+    console.log('Websocket open.');
+    // Start recognition - JBG
+    start();
+  };
+
+  ws.onclose = function(e) {
+    console.log('Websocket closed.');
+  };
+
+  ws.onerror = function(e) {
+    console.log('Websocket errored.');
+  };
+
+  ws.onmessage = function(e) {
+    //console.log(e.data);
+    var fr = new FileReader();
+    fr.onload = function() {
+      var obj = JSON.parse(fr.result);
+      console.log(obj);
+      document.querySelector('p').innerHTML = obj.txt;
+    };
+    fr.readAsText(e.data);
+  };
+
+  // Recognition stuff - JBG
+
+  var recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition ||
+    window.mozSpeechRecognition ||
+    window.msSpeechRecognition)();
+
+  var postIt = function(str) {
+    ws.send(JSON.stringify({ 'txt': str }));
+		restart = true;
+ 		recognition.start();
+  };
+
+  var doIt = function() {
+    document.getElementsByTagName('body')[0].style.background = 'black'
+
+    if(index % 3 == 0) {
+      document.querySelector('body').classList.add('ubermate'); 
+    } else {
+      document.querySelector('body').classList.add('animate'); 
+    } 
+    index++;
+  };
+
+  var report = function(event) {
+    if(event.error) {
+      console.log('error: ' + event.error + ': ' + event.message + " " + JSON.stringify(event));
+    } else {
+      console.log('received event: ' + event.type);
+    }
+  }
+
+  String.prototype.replaceAll = function(search, replacement) {
+      var target = this;
+      return target.replace(new RegExp(search, 'g'), replacement);
+  };
+
+  var start = function() {
+    if (!recognition) {
+      console.log('webkit speech not supported');
+      return;
+    }
+
+    var lastUpdate = new Date();
+
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = function(event) {
+      lastUpdate = new Date();
+
+      var result = event.results[event.resultIndex];
+      var transcript = result[0].transcript.toUpperCase();
+      transcript = transcript
+        .replaceAll('F\\*\\*\\*\\*\\*\\*', 'FUCKING')
+        .replaceAll('F\\*\\*\\*\\*\\*', 'FUCKER')
+        .replaceAll('F\\*\\*\\*', 'FUCK')
+        .replaceAll('S\\*\\*\\*\\*\\*', 'SHITEY')
+        .replaceAll('S\\*\\*\\*\\*', 'SLUTY')
+        .replaceAll('S\\*\\*\\*', 'SHIT')
+        .replaceAll('B\\*\\*\\*\\*\\*\\*\\*', 'BULLSHIT')
+        .replaceAll('B\\*\\*\\*\\*', 'BITCH')
+        .replaceAll('A\\*\\*\\*\\*\\*\\*', 'ASSHOLE')
+        .replaceAll('A\\*\\*', 'ASS')
+        .replaceAll('C\\*\\*\\*', 'CUNT')
+      
+      document.querySelector('h1').style = '';
+      document.querySelector('h1').style['text-align'] = 'left';
+      document.querySelector('h1').innerHTML = transcript;
+
+      if (result.isFinal) {
+        restart = false;
+        recognition.stop();
+        console.log('Final: ' + transcript);
+        //doIt();
+
+        postIt(transcript);
+
+      } else {
+        console.log('Interim: ' + transcript);
+      }
+    };
+
+    recognition.addEventListener('error', report);
+    recognition.addEventListener('audiostart', report);
+    recognition.addEventListener('audioend', report);
+    recognition.addEventListener('nomatch', report);
+    recognition.addEventListener('soundstart', report);
+    recognition.addEventListener('soundend', report);
+    recognition.addEventListener('speechstart', report);
+    recognition.addEventListener('speechend', report);
+    recognition.addEventListener('start', report);
+
+    recognition.onend = function() {
+      console.log('restarting recognition...');
+      if(restart) recognition.start();
+    };
+
+    recognition.start();
+
+    setInterval(function() {
+      var now = new Date();
+      if(now - lastUpdate > 10000) {
+        console.log('warning: resetting idle recognizer')
+        lastUpdate = now;
+        recognition.abort();
+      }
+    }, 1000);
+  };
+
+})();
+
+</script>
+</body>
+</html>
+
