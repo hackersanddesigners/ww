@@ -27,6 +27,8 @@ def startSession():
     f = open(getFilename(), 'w')
     f.write('');
     f.close()
+    q = bot.analyze('')
+    broadcast(q)
   else:
     broadcast(start_txt)
 
@@ -37,6 +39,7 @@ def writeContent(transcript):
 
 def endSession():
   Popen(['osascript', '-e', 'tell application "Finder" to eject (every disk whose ejectable is true)'])
+  broadcast('Thank you and goodbye.')
 
 def hasUSB():
   l = os.listdir('/Volumes')
@@ -118,10 +121,10 @@ def on_release(key):
     if key == keyboard.Key.esc:
       # Stop listener
       return False
-    elif key.char == 'w':
+    elif key.char == 'u':
       print('Start.')
       startSession()
-    elif key.char == 's':
+    elif key.char == 'n':
       print('End.')
       endSession()
   except AttributeError:
